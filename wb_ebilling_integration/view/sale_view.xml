@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="wb_view_sale_order_extend_form" model="ir.ui.view">
+            <field name="name">wb.view.sale.order.extend.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+                <field name="partner_shipping_id" position="after">
+                    <field name="is_new_customer"/>
+                </field>
+                <xpath expr="//notebook" position="inside">
+                    <page string="E-Billing" groups="base.group_no_one" attrs="{'invisible':[('is_new_customer','=','False')]}">
+                        <group>
+                            <button name="postEBillingInvoice" string="Post" type="object" attrs="{'invisible':[('is_integration_done','=','True')]}"/>
+                            <field name="is_integration_done" invisibl="1"/>
+                            <label for="request_data" string="Request"/>
+                            <field name="request_data" readonly="1" nolabel="1"/>
+                            <label for="response_data" string="Response"/>
+                            <field name="response_data" readonly="1" nolabel="1"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+
+
