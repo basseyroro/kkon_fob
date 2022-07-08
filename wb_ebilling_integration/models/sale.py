@@ -38,10 +38,11 @@ class Sales(models.Model):
                 "mobile": "{}".format(self.partner_id.mobile),
                 "pck": "",
                 "ip": "",
+                "company_id": "{}".format(self.company_id.id),
                 "orderno": "{}".format(self.name),
                 "salesperson": "{}".format(self.user_id.partner_id.name),
                 "salesemail": "{}".format(self.user_id.partner_id.email),
-                "orderdate": "{}".format(self.date_order.date() if self.date_order else ''),
+                "orderdate": "{}".format(self.date_order or ''),
                 "tot_amt": "{}".format(self.amount_total),
             }
             indx = 1
@@ -55,7 +56,7 @@ class Sales(models.Model):
                 'Content-Type': 'application/json'
             }
             self.request_data = "{}".format(json.dumps(payload))
-            rst = requests.request("POST", wb_url, headers=headers, data=payload, files=[])
+            rst = requests.request("POST", wb_url, headers=headers, data="{}".format(json.dumps(payload)))
             self.response_data = "{}".format(rst.text)
             self.is_integration_done = False
             if rst.text:
