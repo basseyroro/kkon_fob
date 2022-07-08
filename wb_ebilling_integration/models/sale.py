@@ -6,10 +6,10 @@ import json
 class Sales(models.Model):
     _inherit = "sale.order"
 
-    is_new_customer = fields.Boolean("Is New Customer?")
-    is_integration_done = fields.Boolean("Is Integration Done?")
-    request_data = fields.Text("E-billing Request")
-    response_data = fields.Text("E-billing Response")
+    is_new_customer = fields.Boolean("Is New Customer?", copy=False)
+    is_integration_done = fields.Boolean("Is Integration Done?", copy=False)
+    request_data = fields.Text("E-billing Request", copy=False)
+    response_data = fields.Text("E-billing Response", copy=False)
 
     def action_confirm(self):
         rtn = super(Sales, self).action_confirm()
