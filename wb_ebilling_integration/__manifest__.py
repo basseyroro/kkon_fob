@@ -11,6 +11,8 @@
     'website': 'https://onlineweblearns.blogspot.com',
     'depends' : ['sale'],
     'data': [
+        'security/ir.model.access.csv',
+        'security/groups.xml',
         'view/sale_view.xml',
         'view/res_config_view.xml'
     ],
