@@ -129,8 +129,8 @@ class WBRequestRegistration(models.Model):
         if special_status:
             self_rec = self
         else:
-            self_rec = self.search([], order='id', limit=50)
-        for rec in self_rec:
+            self_rec = self.search([('state','=','draft')], order='id', limit=50)
+        for rec in self_rec.filtered(lambda lm: lm.state == 'draft'):
             if rec.name == "sale":
                 rec.autoPostSaleOrder()
 
