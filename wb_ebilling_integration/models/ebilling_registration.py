@@ -59,11 +59,9 @@ class WBRequestRegistration(models.Model):
         partner_obj = self.env['res.partner']
         product_obj = self.env['product.product']
         uom_obj = self.env['uom.uom']
-        sale_obj = self.env['sale.order']
-        saleline_obj = self.env['sale.order.line']
         tax_obj = self.env['account.tax']
 
-        data = ['name','customerid', 'ebilling_ref', 'lines', 'date']
+        data = ['name','customerid', 'ebilling_ref', 'lines', 'date', 'no_of_paid_month']
         sub_lines = ['description', 'qty', 'price', 'uom', 'tax', 'product_id']
 
         if vals.get("request", {}):
@@ -78,7 +76,7 @@ class WBRequestRegistration(models.Model):
         if vals.get("customerid"):
             partner = partner_obj.sudo().search([('id', '=', vals.get("customerid"))])
             if not partner.exists():
-                return False, "Invalid {} key value.".format(data_key)
+                return False, "Invalid customerid key value."
 
         if type(vals.get("lines")) != type([]):
             return False, "Invalid lines key format."
@@ -163,7 +161,9 @@ class WBRequestRegistration(models.Model):
             default_saleline_values['product_uom_qty'] = line.get("product_id")
             sale_lines.append([0, 0, default_saleline_values])
         default_sale_values['order_line'] = sale_lines
-        default_sale_values['client_order_ref'] = payload.get("ebilling_ref")
+        default_sale_values['x_studio_transaction_id'] = payload.get("ebilling_ref")
+        default_sale_values['x_studio_no_of_months_paid'] = payload.get("no_of_paid_month")
+        default_sale_values['x_studio_doc_status'] = 'Awaiting Account Approval'
         sale_id = sale_obj.create(default_sale_values)
         sale_id.message_post(
             body=_('Order successfully created by {}'.format(self.create_uid.display_name)),
