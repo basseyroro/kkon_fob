@@ -148,7 +148,7 @@ class WBRequestRegistration(models.Model):
         sale_lines = []
         for line in payload.get("lines", []):
             context = {'partner_id':payload.get("customerid"),
-                        'quantity':payload.get("customerid"),
+                        'quantity': line.get("qty", 0),
                         'pricelist':default_sale_values.get("pricelist_id"),
                         'default_product_id': line.get("product_id"),
                         'product_id': line.get("product_id"),
@@ -157,8 +157,7 @@ class WBRequestRegistration(models.Model):
             default_saleline_values = saleline_obj.sudo().with_context(context).default_get(saleline_field_list)
             default_saleline_values['product_id'] = line.get("product_id")
             default_saleline_values['price_unit'] = line.get("price")
-            # default_saleline_values['product_uom'] = line.get("uom")
-            default_saleline_values['product_uom_qty'] = line.get("product_id")
+            default_saleline_values['product_uom_qty'] = line.get("qty", 0)
             sale_lines.append([0, 0, default_saleline_values])
         default_sale_values['order_line'] = sale_lines
         default_sale_values['x_studio_transaction_id'] = payload.get("ebilling_ref")
