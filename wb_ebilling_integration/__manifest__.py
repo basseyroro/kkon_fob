@@ -14,7 +14,8 @@
         'security/ir.model.access.csv',
         'security/groups.xml',
         'view/sale_view.xml',
-        'view/res_config_view.xml'
+        'view/res_config_view.xml',
+        'data/cron.xml'
     ],
     'installable': True,
     'license': 'LGPL-3',
