@@ -115,7 +115,8 @@ class WBRequestRegistration(models.Model):
         return True, "Registered successfully."
 
     def getProductList(self):
-        return [{'id':prd.id, 'name':prd.name} for prd in self.env['product.product'].search([('sale_ok', '=', True)])]
+        return [{'id':prd.id, 'name':prd.name} for prd in
+                self.env['product.product'].search([('sale_ok', '=', True)])]
 
     def getTaxList(self):
         return [{'id': prd.id, 'name': prd.name} for prd in
@@ -162,8 +163,9 @@ class WBRequestRegistration(models.Model):
             default_saleline_values['product_uom_qty'] = line.get("product_id")
             sale_lines.append([0, 0, default_saleline_values])
         default_sale_values['order_line'] = sale_lines
+        default_sale_values['client_order_ref'] = payload.get("ebilling_ref")
         sale_id = sale_obj.create(default_sale_values)
         sale_id.message_post(
             body=_('Order successfully created by {}'.format(self.create_uid.display_name)),
         )
-        self.write({"sale_id": sale_id.id, "state": "done", "client_order_ref": payload.get("ebilling_ref")})
+        self.write({"sale_id": sale_id.id, "state": "done"})
