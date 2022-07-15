@@ -168,4 +168,5 @@ class WBRequestRegistration(models.Model):
         sale_id.message_post(
             body=_('Order successfully created by {}'.format(self.create_uid.display_name)),
         )
+        sale_id.action_confirm()
         self.write({"sale_id": sale_id.id, "state": "done"})
