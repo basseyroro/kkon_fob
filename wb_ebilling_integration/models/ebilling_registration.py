@@ -131,7 +131,7 @@ class WBRequestRegistration(models.Model):
         else:
             self_rec = self.search([('state','=','draft')], order='id', limit=50)
         for rec in self_rec.filtered(lambda lm: lm.state == 'draft'):
-            if rec.name == "sale":
+            if rec.name == "sale" and not rec.sale_id:
                 rec.autoPostSaleOrder()
 
     def autoPostSaleOrder(self):
